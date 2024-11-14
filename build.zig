@@ -16,7 +16,7 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const lib = b.addStaticLibrary(.{
-        .name = "zigzag",
+        .name = "Zig-Zag",
         // In this case the main source file is merely a path, however, in more
         // complicated build scripts, this could be a generated file.
         .root_source_file = b.path("src/root.zig"),
@@ -36,8 +36,23 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    exe.linkFramework("CoreGraphics");
-    exe.linkFramework("CoreFoundation");
+    const builtin = @import("builtin");
+    switch (builtin.target.os.tag) {
+        .macos => {
+            exe.linkFramework("CoreGraphics");
+            exe.linkFramework("CoreFoundation");
+        },
+        .windows => {
+            exe.linkSystemLibrary("user32");
+        },
+        .linux => {
+            exe.linkFramework("X11");
+        },
+        else => {
+            const message = "Unsportted OS " + builtin.target.os.tag;
+            @compileError(message);
+        },
+    }
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
