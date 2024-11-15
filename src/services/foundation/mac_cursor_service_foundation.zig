@@ -9,14 +9,14 @@ pub const MacCursorService = struct {
         _ = self;
         _ = position;
     }
-    pub fn getCurrentPosition(self: *Self) zp {
+    pub fn getCurrentPosition(self: *Self) zp.ZagPosition(f64) {
         _ = self;
         const cgPoint = mcb.getCurrentPoint();
         const positon = zp.ZagPosition(f64).init(cgPoint.x, cgPoint.y);
         return positon;
     }
 
-    pub fn Cursor() ICursorService {
-        return ICursorService.init(f64, &Self, Self.moveCursor, Self.getCurrentPosition);
+    pub fn Cursor() ICursorService(f64) {
+        return ICursorService(f64).init(&Self, Self.moveCursor, Self.getCurrentPosition);
     }
 };
