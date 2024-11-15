@@ -7,19 +7,19 @@ pub const CusorService = struct {
     const Self = @This();
     const osTag = builtin.os.tag;
     cursorService: ICursorService(type) = switch (builtin.os.tag) {
-        .macos => @import("../foundation/mac_cursor_service_foundation.zig").MacCursorService.Cursor(),
+        .macos => cursorService: {
+            const mcsType = @import("../foundation/mac_cursor_service_foundation.zig").MacCursorService;
+            const mcs = mcsType{};
+            break :cursorService mcs.cursor();
+        },
         else => @panic("unsupported OS"),
     },
 
-    pub fn moveCursor(self: Self, position: zp.ZagPosition) void {
+    pub fn moveCursor(self: *Self, position: zp.ZagPosition(type)) void {
         Self.cursorService.moveCursor(self, position);
     }
-    pub fn getCurrentPosition(self: Self) zp.ZagPosition {
+    pub fn getCurrentPosition(self: *Self) zp.ZagPosition(type) {
         return Self.cursorService.getCurrentPosition(self);
-    }
-
-    pub fn Cursor(self: Self) ICursorService {
-        return ICursorService().init(&self, self.moveCursor, self.getCurrentPosition);
     }
 };
 

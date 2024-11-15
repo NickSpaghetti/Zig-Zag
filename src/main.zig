@@ -11,7 +11,7 @@ const kCGHIDEventTap = 0;
 
 pub fn main() !void {
     const x = CusorService{};
-    x.moveCursor();
+    x.getCurrentPosition();
     const displayID = c.CGMainDisplayID();
     const displayWidth = c.CGDisplayPixelsWide(displayID);
     const displayHeight = c.CGDisplayPixelsHigh(displayID);

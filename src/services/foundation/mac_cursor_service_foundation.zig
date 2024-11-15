@@ -16,7 +16,7 @@ pub const MacCursorService = struct {
         return positon;
     }
 
-    pub fn Cursor() ICursorService(f64) {
-        return ICursorService(f64).init(&Self, Self.moveCursor, Self.getCurrentPosition);
+    pub fn cursor(self: *Self) ICursorService(f64) {
+        return ICursorService(f64).init(self, Self.moveCursor, Self.getCurrentPosition);
     }
 };
