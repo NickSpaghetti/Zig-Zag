@@ -1,4 +1,3 @@
-const zp = @import("./../../models/zag_position.zig");
 const mdb = @import("./../../brokers/displays/mac_display_broker.zig").MacDisplayBroker;
 const std = @import("std");
 const IDisplayService = @import("./../display_service_interface.zig").IDisplayService;

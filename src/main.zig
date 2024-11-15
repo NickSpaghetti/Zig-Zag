@@ -5,7 +5,6 @@ const c = @cImport({
 });
 const RndGen = std.rand.DefaultPrng;
 const CusorServiceUnion = @import("./services/aggregate/cursor_service_aggregater.zig");
-//const CusorService = @import("./services/aggregate/cursor_service_aggregater2.zig").CusorService;
 const MacCursorService = @import("./services/foundation/mac_cursor_service_foundation.zig").MacCursorService;
 const MacDisplayService = @import("./services/foundation/mac_display_service_foundation.zig").MacDisplayService;
 
@@ -19,6 +18,7 @@ pub fn main() !void {
     //cursor.getCurrentPosition();
     // var mcs = MacCursorService{};
     // var ics = mcs.cursor();
+    // const x = ics.getCurrentPosition();
     // _ = ics.getCurrentPosition();
     // var mds = MacDisplayService{};
     // const ids = mds.display();
@@ -27,7 +27,7 @@ pub fn main() !void {
     const x = cs.getCurrentPosition();
     // var cs = CusorService{};
     // const x = cs.getCurrentPosition();
-    std.debug.print("x{},y{}", .{ x.x, x.y });
+    std.debug.print("x{},y{}", .{ x.point.float64, x.point.float64.y });
     const displayID = c.CGMainDisplayID();
     const displayWidth = c.CGDisplayPixelsWide(displayID);
     const displayHeight = c.CGDisplayPixelsHigh(displayID);
