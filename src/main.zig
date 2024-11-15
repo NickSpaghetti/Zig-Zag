@@ -4,11 +4,14 @@ const c = @cImport({
     @cInclude("CoreFoundation/CoreFoundation.h");
 });
 const RndGen = std.rand.DefaultPrng;
+const CusorService = @import("./services/aggregate/cursor_service_aggregater.zig").CusorService;
 
 const kCGEventPointMoved = 5;
 const kCGHIDEventTap = 0;
 
 pub fn main() !void {
+    const x = CusorService{};
+    x.moveCursor();
     const displayID = c.CGMainDisplayID();
     const displayWidth = c.CGDisplayPixelsWide(displayID);
     const displayHeight = c.CGDisplayPixelsHigh(displayID);
