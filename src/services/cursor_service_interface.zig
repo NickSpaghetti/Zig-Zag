@@ -1,6 +1,7 @@
 const zp = @import("./../models/zag_position.zig");
 const std = @import("std");
 const assert = std.debug.assert;
+const IDisplayService = @import("display_service_interface.zig").IDisplayService;
 
 pub fn ICursorService(comptime ZPT: type) type {
     return struct {

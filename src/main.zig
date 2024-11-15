@@ -4,19 +4,30 @@ const c = @cImport({
     @cInclude("CoreFoundation/CoreFoundation.h");
 });
 const RndGen = std.rand.DefaultPrng;
-const CusorService = @import("./services/aggregate/cursor_service_aggregater.zig").CusorService;
+const CusorServiceUnion = @import("./services/aggregate/cursor_service_aggregater.zig");
+//const CusorService = @import("./services/aggregate/cursor_service_aggregater2.zig").CusorService;
 const MacCursorService = @import("./services/foundation/mac_cursor_service_foundation.zig").MacCursorService;
+const MacDisplayService = @import("./services/foundation/mac_display_service_foundation.zig").MacDisplayService;
 
 const kCGEventPointMoved = 5;
 const kCGHIDEventTap = 0;
 
 pub fn main() !void {
-    // const x = CusorService{};
-    // const cursor = x.cursor();
-    // cursor.getCurrentPosition();
-    var mcs = MacCursorService{};
-    const ics = mcs.cursor();
-    _ = ics.getCurrentPosition();
+    // var x = CusorService{};
+    // _ = x.getCurrentPosition();
+    //const cursor = x.cursor();
+    //cursor.getCurrentPosition();
+    // var mcs = MacCursorService{};
+    // var ics = mcs.cursor();
+    // _ = ics.getCurrentPosition();
+    // var mds = MacDisplayService{};
+    // const ids = mds.display();
+    // _ = ids.getMainDisplayID();
+    var cs = CusorServiceUnion.GetCursor();
+    const x = cs.getCurrentPosition();
+    // var cs = CusorService{};
+    // const x = cs.getCurrentPosition();
+    std.debug.print("x{},y{}", .{ x.x, x.y });
     const displayID = c.CGMainDisplayID();
     const displayWidth = c.CGDisplayPixelsWide(displayID);
     const displayHeight = c.CGDisplayPixelsHigh(displayID);

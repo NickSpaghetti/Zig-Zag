@@ -1,26 +1,34 @@
-const std = @import("std");
-const builtin = @import("builtin");
 const ICursorService = @import("./../cursor_service_interface.zig").ICursorService;
 const zp = @import("./../../models/zag_position.zig");
+const std = @import("std");
+const builtin = @import("builtin");
 
-pub const CusorService = struct {
-    const Self = @This();
-    cursorService: ICursorService() = switch (builtin.os.tag) {
-        .macos => cursorService: {
+pub fn GetCursor() CursorServiceUnion {
+    switch (builtin.os.tag) {
+        .macos => {
             var mcs = @import("../foundation/mac_cursor_service_foundation.zig").MacCursorService{};
-            break :cursorService mcs.cursor();
+            return CursorServiceUnion{ .macos = mcs.cursor() };
         },
-        else => std.debug.panic("unsupported OS {}", .{builtin.os.tag}),
-    },
-
-    pub fn moveCursor(self: *Self, position: zp.ZagPosition(type)) void {
-        Self.cursorService.moveCursor(self, position);
+        else => std.debug.panic("Unsuported OS {}", .{builtin.os.tag}),
     }
-    pub fn getCurrentPosition(self: *Self) zp.ZagPosition(type) {
-        return Self.cursorService.getCurrentPosition(self);
-    }
+}
 
-    pub fn cursor(self: *Self) ICursorService(type) {
-        return ICursorService(type).init(&self);
+pub const CursorServiceUnion = union(enum) {
+    const Self = @This();
+    macos: ICursorService(f64),
+    windows: *ICursorService(i32),
+    linux: *ICursorService(f64),
+
+    pub fn moveCursor(self: *Self, position: zp.ZagPosition(*anyopaque)) void {
+        switch (self) {
+            inline else => |s| s.moveCursor(position),
+        }
+    }
+    pub fn getCurrentPosition(self: *Self) zp.ZagPosition(*anyopaque) {
+        switch (self) {
+            else => |s| {
+                return s.getCurrentPosition();
+            },
+        }
     }
 };
