@@ -5,7 +5,7 @@ const c = @cImport({
 });
 const RndGen = std.rand.DefaultPrng;
 const CusorService = @import("./services/aggregate/cursor_service_aggregater.zig").CusorService;
-const MCS = @import("./services/foundation/mac_cursor_service_foundation.zig").MacCursorService;
+const MacCursorService = @import("./services/foundation/mac_cursor_service_foundation.zig").MacCursorService;
 
 const kCGEventPointMoved = 5;
 const kCGHIDEventTap = 0;
@@ -14,9 +14,9 @@ pub fn main() !void {
     // const x = CusorService{};
     // const cursor = x.cursor();
     // cursor.getCurrentPosition();
-    const m = MCS{};
-    var mc = m.cursor();
-    _ = mc.getCurrentPosition();
+    var mcs = MacCursorService{};
+    const ics = mcs.cursor();
+    _ = ics.getCurrentPosition();
     const displayID = c.CGMainDisplayID();
     const displayWidth = c.CGDisplayPixelsWide(displayID);
     const displayHeight = c.CGDisplayPixelsHigh(displayID);

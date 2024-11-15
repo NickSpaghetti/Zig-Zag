@@ -4,7 +4,7 @@ const c = @cImport({
     @cInclude("CoreFoundation/CoreFoundation.h");
 });
 
-const MacCursorBroker = struct {
+pub const MacCursorBroker = struct {
     pub fn moveCursor(displayID: u32, point: c.CGPoint) c.CGError {
         return c.CGDisplayMoveCursorToPoint(displayID, point);
     }

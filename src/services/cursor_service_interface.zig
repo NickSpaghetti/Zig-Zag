@@ -40,8 +40,8 @@ pub fn ICursorService(comptime ZPT: type) type {
             return .{
                 .ptr = obj,
                 .vtab = &.{
-                    .moveCursor = impl.moveCursor,
-                    .getCurrentPosition = impl.getCurrentPosition,
+                    .moveCursorFnPtr = impl.moveCursor,
+                    .getCurrentPositionFnPtr = impl.getCurrentPosition,
                 },
             };
         }

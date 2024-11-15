@@ -1,5 +1,5 @@
 const zp = @import("./../../models/zag_position.zig");
-const mcb = @import("./../../brokers/cursors/mac_cursor_broker.zig");
+const mcb = @import("./../../brokers/cursors/mac_cursor_broker.zig").MacCursorBroker;
 const std = @import("std");
 const ICursorService = @import("./../cursor_service_interface.zig").ICursorService;
 
@@ -8,7 +8,6 @@ pub const MacCursorService = struct {
     pub fn moveCursor(self: *Self, position: zp.ZagPosition(f64)) void {
         _ = self;
         _ = position;
-        std.debug.print("moving");
     }
     pub fn getCurrentPosition(self: *Self) zp.ZagPosition(f64) {
         _ = self;
@@ -18,6 +17,6 @@ pub const MacCursorService = struct {
     }
 
     pub fn cursor(self: *Self) ICursorService(f64) {
-        return ICursorService(f64).init(&self);
+        return ICursorService(f64).init(self);
     }
 };
