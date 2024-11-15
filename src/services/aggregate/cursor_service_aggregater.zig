@@ -5,7 +5,7 @@ const zp = @import("./../../models/zag_position.zig");
 
 pub const CusorService = struct {
     const Self = @This();
-    cursorService: ICursorService(type) = switch (builtin.os.tag) {
+    cursorService: ICursorService() = switch (builtin.os.tag) {
         .macos => cursorService: {
             var mcs = @import("../foundation/mac_cursor_service_foundation.zig").MacCursorService{};
             break :cursorService mcs.cursor();
@@ -21,6 +21,6 @@ pub const CusorService = struct {
     }
 
     pub fn cursor(self: *Self) ICursorService(type) {
-        return ICursorService(type).init(self, Self.moveCursor, self.getCurrentPosition);
+        return ICursorService(type).init(&self);
     }
 };

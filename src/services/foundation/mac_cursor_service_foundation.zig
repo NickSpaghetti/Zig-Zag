@@ -8,6 +8,7 @@ pub const MacCursorService = struct {
     pub fn moveCursor(self: *Self, position: zp.ZagPosition(f64)) void {
         _ = self;
         _ = position;
+        std.debug.print("moving");
     }
     pub fn getCurrentPosition(self: *Self) zp.ZagPosition(f64) {
         _ = self;
@@ -17,6 +18,6 @@ pub const MacCursorService = struct {
     }
 
     pub fn cursor(self: *Self) ICursorService(f64) {
-        return ICursorService(f64).init(&self, Self.moveCursor, Self.getCurrentPosition);
+        return ICursorService(f64).init(&self);
     }
 };
