@@ -9,9 +9,11 @@ pub const MacCursorService = struct {
     const mds = MacDisplayService.display();
     pub fn moveCursor(self: *Self, position: *const Coordinates.CordiantedPosition) void {
         _ = self;
-        // if (position.*.isInt32()) {
-        //     std.debug.panic("Macos only supports CoordianteTypes of float64", .{});
-        // }
+        const temp = @constCast(position);
+        if (temp.*.isInt32()) {
+            std.debug.panic("Macos only supports CoordianteTypes of float64", .{});
+        }
+
         const dislayID = mds.getMainDisplayID();
         const point = mcb.createCGPoint(position.*.point.float64.x, position.*.point.float64.y);
         const event = mcb.createMouseEvent(point);

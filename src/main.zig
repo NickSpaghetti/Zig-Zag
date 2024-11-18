@@ -1,16 +1,9 @@
 const std = @import("std");
-const c = @cImport({
-    @cInclude("CoreGraphics/CoreGraphics.h");
-    @cInclude("CoreFoundation/CoreFoundation.h");
-});
 const RndGen = std.rand.DefaultPrng;
 const CusorServiceUnion = @import("./services/aggregate/cursor_service_aggregater.zig");
 const MacCursorService = @import("./services/foundation/mac_cursor_service_foundation.zig").MacCursorService;
 const MacDisplayService = @import("./services/foundation/mac_display_service_foundation.zig").MacDisplayService;
 const CoordinateGeneraterService = @import("./services/foundation/coordinate_generater_service_foundation.zig").CoordinateGeneraterService;
-
-const kCGEventPointMoved = 5;
-const kCGHIDEventTap = 0;
 
 pub fn main() !void {
     var cs = CusorServiceUnion.GetCursor();
