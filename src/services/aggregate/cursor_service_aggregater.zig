@@ -20,7 +20,7 @@ const CursorServiceUnion = union(enum) {
     windows: ICursorService,
     linux: ICursorService,
 
-    pub fn moveCursor(self: *Self, position: *Coordinates.CordiantedPosition) void {
+    pub fn moveCursor(self: *Self, position: *const Coordinates.CordiantedPosition) void {
         switch (builtin.os.tag) {
             .macos => {
                 self.macos.moveCursor(position);
@@ -33,5 +33,18 @@ const CursorServiceUnion = union(enum) {
             .macos => self.macos.getCurrentPosition(),
             else => std.debug.panic("Unsuported OS {}", .{builtin.os.tag}),
         };
+    }
+
+    pub fn moveCursorSmooth(self: *Self, position: *const Coordinates.CordiantedPosition) void {
+        var currentPosition = self.getCurrentPosition();
+        var smoothPosition = currentPosition.subtractCoordiantes(position);
+        const magnitude = smoothPosition.magnitude();
+        const steps = @as(usize, @intFromFloat(@round(@abs(magnitude))));
+        self.moveCursor(position);
+        for (0..steps) |i| {
+            const t = @as(f64, @as(f64, @floatFromInt(i)) / @as(f64, @floatFromInt(steps - 1)));
+            const interploatedPosition = currentPosition.lerp(position, t);
+            self.moveCursor(&interploatedPosition);
+        }
     }
 };

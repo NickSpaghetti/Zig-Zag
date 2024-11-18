@@ -7,12 +7,12 @@ pub const ICursorService = struct {
     ptr: *anyopaque, //ptr to instance
     vtab: *const VTab, //ptr to vtab
     const VTab = struct { // inmemory tables
-        moveCursorFnPtr: *const fn (ptr: *anyopaque, *Coordinates.CordiantedPosition) void,
+        moveCursorFnPtr: *const fn (ptr: *anyopaque, *const Coordinates.CordiantedPosition) void,
         getCurrentPositionFnPtr: *const fn (ptr: *anyopaque) Coordinates.CordiantedPosition,
     };
 
     // define interface methods wrapping vtable calls
-    pub fn moveCursor(self: ICursorService, position: *Coordinates.CordiantedPosition) void {
+    pub fn moveCursor(self: ICursorService, position: *const Coordinates.CordiantedPosition) void {
         self.vtab.moveCursorFnPtr(self.ptr, position);
     }
     pub fn getCurrentPosition(self: ICursorService) Coordinates.CordiantedPosition {
@@ -27,7 +27,7 @@ pub const ICursorService = struct {
         assert(PtrInfo.Pointer.size == .One); // Must be a single-item pointer
         assert(@typeInfo(PtrInfo.Pointer.child) == .Struct); // Must point to a struct
         const impl = struct {
-            fn moveCursor(ptr: *anyopaque, position: *Coordinates.CordiantedPosition) void {
+            fn moveCursor(ptr: *anyopaque, position: *const Coordinates.CordiantedPosition) void {
                 const self: Ptr = @ptrCast(@alignCast(ptr));
                 self.moveCursor(position);
             }
