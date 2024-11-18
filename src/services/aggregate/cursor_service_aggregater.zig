@@ -37,9 +37,7 @@ const CursorServiceUnion = union(enum) {
 
     pub fn moveCursorSmooth(self: *Self, position: *const Coordinates.CordiantedPosition) void {
         var currentPosition = self.getCurrentPosition();
-        var smoothPosition = currentPosition.subtractCoordiantes(position);
-        const magnitude = smoothPosition.magnitude();
-        const steps = @as(usize, @intFromFloat(@round(@abs(magnitude))));
+        const steps = @as(usize, @intFromFloat(@round(@abs(currentPosition.magnitude()))));
         self.moveCursor(position);
         for (0..steps) |i| {
             const t = @as(f64, @as(f64, @floatFromInt(i)) / @as(f64, @floatFromInt(steps - 1)));

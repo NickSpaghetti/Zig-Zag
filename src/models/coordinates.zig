@@ -69,7 +69,7 @@ pub const CordiantedPosition = struct {
         return Self.set_f64(self.point.float64.x / divisor.point.float64.x, self.point.float64.y / divisor.point.float64.y);
     }
 
-    pub fn equalTo(self: *Self, position: CordiantedPosition) bool {
+    pub fn equalTo(self: *Self, position: *const CordiantedPosition) bool {
         if (self.isInt32()) {
             return self.point.int32.x == position.point.int32.x and self.point.int32.y == position.point.int32.y;
         }
@@ -77,25 +77,25 @@ pub const CordiantedPosition = struct {
         return self.point.float64.x == position.point.float64.x and self.point.float64.y == position.point.float64.y;
     }
 
-    pub fn lessThan(self: *Self, position: CordiantedPosition) bool {
+    pub fn lessThan(self: *Self, position: *const CordiantedPosition) bool {
         if (self.isInt32()) {
             return self.point.int32.x < position.point.int32.x and self.point.int32.y < self.point.int32.y;
         }
-        return self.point.float64.x < position.point.float64x and self.point.float64.y < self.point.float64.y;
+        return self.point.float64.x < position.point.float64.x and self.point.float64.y < self.point.float64.y;
     }
 
-    pub fn lessThanOrEqualTo(self: *Self, position: CordiantedPosition) bool {
+    pub fn lessThanOrEqualTo(self: *Self, position: *const CordiantedPosition) bool {
         return self.lessThan(position) or self.equalTo(position);
     }
 
-    pub fn greaterThan(self: *Self, position: CordiantedPosition) bool {
+    pub fn greaterThan(self: *Self, position: *const CordiantedPosition) bool {
         if (self.isInt32()) {
             return self.point.int32.x > position.point.int32.x and self.point.int32.y > self.point.int32.y;
         }
-        return self.point.float64.x > position.point.float64x and self.point.float64.y > self.point.float64.y;
+        return self.point.float64.x > position.point.float64.x and self.point.float64.y > self.point.float64.y;
     }
 
-    pub fn greaterThanOrEqualTo(self: *Self, position: CordiantedPosition) bool {
+    pub fn greaterThanOrEqualTo(self: *Self, position: *const CordiantedPosition) bool {
         return self.greaterThan(position) or self.equalTo(position);
     }
 
