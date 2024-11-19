@@ -33,4 +33,15 @@ pub const MacCursorBroker = struct {
         c.CFRelease(event);
         return cursor;
     }
+
+    pub fn getDisplayIds() []u32 {
+        const maxDisplays: c.unit32_t = std.math.maxInt(i32);
+        var displays: [maxDisplays]c.CGDirectDisplayID = undefined;
+        var displayCount: c.unit32_t = 0;
+        const result = c.CGGetActiveDisplayList(maxDisplays, &displays, &displayCount);
+        if (result != c.kCGErrorSuccess) {
+            std.debug.panic("failed to get list of active displays.", .{});
+        }
+        return displays[0..displayCount];
+    }
 };

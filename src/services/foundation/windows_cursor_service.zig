@@ -25,6 +25,9 @@ pub const WindowsCursorService = struct {
     pub fn getCurrentPosition(self: *Self) Coordinates.CordiantedPosition {
         _ = self;
         const point = wcb.getCurrentPoint();
+        if (point == null) {
+            std.debug.panic("Failed to get current point", .{});
+        }
         const cord = Coordinates.CordiantedPosition.set_i32(point.x, point.y);
         return cord;
     }
