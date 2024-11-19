@@ -48,7 +48,7 @@ pub fn build(b: *std.Build) void {
             exe.linkSystemLibrary("user32");
         },
         .linux => {
-            exe.linkFramework("X11");
+            exe.linkSystemLibrary("X11");
         },
         else => {
             const message = "Unsportted OS " + builtin.target.os.tag;
